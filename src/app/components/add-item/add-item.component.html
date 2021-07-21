@@ -1,0 +1,6 @@
+<div class="wrapper">
+  <input type="text" name="item" [(ngModel)]="title" />
+  <button type="button" class="save" (click)="handleSave()" [disabled]="!title">
+    Save
+  </button>
+</div>

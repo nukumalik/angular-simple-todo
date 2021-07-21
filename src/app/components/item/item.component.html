@@ -1,0 +1,36 @@
+<div
+  class="wrapper"
+  [ngStyle]="{ backgroundColor: data?.isDone ? '#eee' : 'white' }"
+>
+  <input *ngIf="isEdit; else titleBlock" [(ngModel)]="title" />
+
+  <ng-template #titleBlock>
+    <span [ngStyle]="{ textDecoration: data?.isDone ? 'line-through' : '' }">{{
+      data?.title
+    }}</span>
+  </ng-template>
+  <div class="action-button">
+    <button
+      *ngIf="isEdit; else elseBlock"
+      type="button"
+      class="save"
+      (click)="handleSave()"
+    >
+      Save
+    </button>
+
+    <ng-template #elseBlock>
+      <button type="button" class="edit" (click)="handleEdit()">Edit</button>
+    </ng-template>
+    <button
+      type="button"
+      [ngClass]="data?.isDone ? 'cancel' : 'done'"
+      (click)="handleDone()"
+    >
+      {{ data?.isDone ? "Cancel" : "Done" }}
+    </button>
+    <button type="button" class="delete" (click)="handleDelete()">
+      Delete
+    </button>
+  </div>
+</div>
