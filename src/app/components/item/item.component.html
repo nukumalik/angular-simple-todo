@@ -29,15 +29,11 @@
     <button
       type="button"
       [ngClass]="task?.isDone ? 'cancel' : 'done'"
-      (click)="taskService.updateStatus(task.id)"
+      (click)="updateStatus()"
     >
       {{ task?.isDone ? "Cancel" : "Done" }}
     </button>
-    <button
-      type="button"
-      class="delete"
-      (click)="taskService.deleteData(task.id)"
-    >
+    <button type="button" class="delete" (click)="handleDelete()">
       Delete
     </button>
   </div>

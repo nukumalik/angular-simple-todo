@@ -1,57 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Task } from '../interfaces/task';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private tasks: Task[] = [
-    {
-      id: 1,
-      title: 'Send email to HR',
-      isDone: false,
-    },
-    {
-      id: 2,
-      title: 'Fix dashboard issues',
-      isDone: false,
-    },
-    {
-      id: 3,
-      title: 'Daily Stand Up on Mars project',
-      isDone: false,
-    },
-  ];
+  apiURL: string = 'http://localhost:4300/tasks';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  getData(): Task[] {
-    return this.tasks;
+  getData(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.apiURL);
   }
 
-  addData(task: Task): void {
-    if (!task?.id && !task?.title && !task?.isDone) return;
-    this.tasks.push(task);
-  }
-
-  updateTitle(id: number, title: string): void {
-    this.tasks = this.tasks.map((task) => {
-      if (task?.id === id) return { ...task, title };
-
-      return task;
+  addData(task: Task): Observable<Task> {
+    return this.http.post<Task>(this.apiURL, JSON.stringify(task), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
   }
 
-  updateStatus(id: number): void {
-    this.tasks = this.tasks.map((task: Task) => {
-      if (task?.id === id) return { ...task, isDone: !task?.isDone };
-
-      return task;
-    });
+  updateTitle(id: number | string, title: string): Observable<Task> {
+    return this.http.patch<Task>(
+      `${this.apiURL}/${id}`,
+      JSON.stringify({ title }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 
-  deleteData(id: string | number): void {
-    this.tasks = this.tasks.filter((task: Task) => task?.id !== id);
+  updateStatus(id: number | string, isDone: boolean): Observable<Task> {
+    return this.http.patch<Task>(
+      `${this.apiURL}/${id}`,
+      JSON.stringify({ isDone }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+
+  deleteData(id: string | number): Observable<Task> {
+    return this.http.delete<Task>(`${this.apiURL}/${id}`);
   }
 }

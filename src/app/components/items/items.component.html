@@ -1,2 +1,8 @@
-<app-add-item></app-add-item>
-<app-item *ngFor="let task of taskService.getData()" [task]="task"></app-item>
+<app-add-item (onSave)="onSave($event)"></app-add-item>
+<app-item
+  *ngFor="let task of tasks"
+  [task]="task"
+  (onUpdateStatus)="onUpdateStatus(task.id, $event)"
+  (onUpdateTitle)="onUpdateTitle(task.id, $event)"
+  (onDelete)="onDelete(task.id)"
+></app-item>

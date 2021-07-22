@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TaskService } from 'src/app/services/task.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-item',
@@ -9,10 +8,14 @@ import { TaskService } from 'src/app/services/task.service';
 export class ItemComponent implements OnInit {
   @Input() task: any;
 
+  @Output() onUpdateStatus = new EventEmitter();
+  @Output() onUpdateTitle = new EventEmitter();
+  @Output() onDelete = new EventEmitter();
+
   isEdit: boolean = false;
   title: string = '';
 
-  constructor(public taskService: TaskService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.title = this.task.title;
@@ -22,8 +25,16 @@ export class ItemComponent implements OnInit {
     this.isEdit = true;
   }
 
+  updateStatus() {
+    this.onUpdateStatus.emit(!this.task.isDone);
+  }
+
   updateTitle(): void {
-    this.taskService.updateTitle(this.task.id, this.title);
+    this.onUpdateTitle.emit(this.title);
     this.isEdit = false;
+  }
+
+  handleDelete() {
+    this.onDelete.emit();
   }
 }

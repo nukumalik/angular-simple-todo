@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-add-item',
@@ -7,14 +6,16 @@ import { TaskService } from 'src/app/services/task.service';
   styleUrls: ['./add-item.component.scss'],
 })
 export class AddItemComponent implements OnInit {
+  @Output() onSave = new EventEmitter();
+
   title: string = '';
 
-  constructor(private taskService: TaskService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   handleSave() {
-    this.taskService.addData({
+    this.onSave.emit({
       id: Math.random(),
       title: this.title,
       isDone: false,
