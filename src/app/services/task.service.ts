@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { Task } from '../interfaces/task';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private tasks = [
+  private tasks: Task[] = [
     {
       id: 1,
       title: 'Send email to HR',
@@ -25,7 +26,32 @@ export class TaskService {
 
   constructor() {}
 
-  getData(): Observable<any[]> {
-    return of(this.tasks);
+  getData(): Task[] {
+    return this.tasks;
+  }
+
+  addData(task: Task): void {
+    if (!task?.id && !task?.title && !task?.isDone) return;
+    this.tasks.push(task);
+  }
+
+  updateTitle(id: number, title: string): void {
+    this.tasks = this.tasks.map((task) => {
+      if (task?.id === id) return { ...task, title };
+
+      return task;
+    });
+  }
+
+  updateStatus(id: number): void {
+    this.tasks = this.tasks.map((task: Task) => {
+      if (task?.id === id) return { ...task, isDone: !task?.isDone };
+
+      return task;
+    });
+  }
+
+  deleteData(id: string | number): void {
+    this.tasks = this.tasks.filter((task: Task) => task?.id !== id);
   }
 }

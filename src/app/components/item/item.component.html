@@ -1,12 +1,12 @@
 <div
   class="wrapper"
-  [ngStyle]="{ backgroundColor: data?.isDone ? '#eee' : 'white' }"
+  [ngStyle]="{ backgroundColor: task?.isDone ? '#eee' : 'white' }"
 >
   <input *ngIf="isEdit; else titleBlock" [(ngModel)]="title" />
 
   <ng-template #titleBlock>
-    <span [ngStyle]="{ textDecoration: data?.isDone ? 'line-through' : '' }">{{
-      data?.title
+    <span [ngStyle]="{ textDecoration: task?.isDone ? 'line-through' : '' }">{{
+      task?.title
     }}</span>
   </ng-template>
   <div class="action-button">
@@ -14,7 +14,7 @@
       *ngIf="isEdit; else elseBlock"
       type="button"
       class="save"
-      (click)="handleSave()"
+      (click)="updateTitle()"
     >
       Save
     </button>
@@ -24,12 +24,16 @@
     </ng-template>
     <button
       type="button"
-      [ngClass]="data?.isDone ? 'cancel' : 'done'"
-      (click)="handleDone()"
+      [ngClass]="task?.isDone ? 'cancel' : 'done'"
+      (click)="taskService.updateStatus(task.id)"
     >
-      {{ data?.isDone ? "Cancel" : "Done" }}
+      {{ task?.isDone ? "Cancel" : "Done" }}
     </button>
-    <button type="button" class="delete" (click)="handleDelete()">
+    <button
+      type="button"
+      class="delete"
+      (click)="taskService.deleteData(task.id)"
+    >
       Delete
     </button>
   </div>
