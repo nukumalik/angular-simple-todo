@@ -30,6 +30,7 @@
     &:disabled {
       background-color: #eee !important;
       color: #aaa;
+      cursor: default;
     }
 
     &.save {

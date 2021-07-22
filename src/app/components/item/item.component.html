@@ -2,7 +2,11 @@
   class="wrapper"
   [ngStyle]="{ backgroundColor: task?.isDone ? '#eee' : 'white' }"
 >
-  <input *ngIf="isEdit; else titleBlock" [(ngModel)]="title" />
+  <input
+    *ngIf="isEdit; else titleBlock"
+    [(ngModel)]="title"
+    (keyup.enter)="updateTitle()"
+  />
 
   <ng-template #titleBlock>
     <span [ngStyle]="{ textDecoration: task?.isDone ? 'line-through' : '' }">{{
